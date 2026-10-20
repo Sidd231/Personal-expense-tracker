@@ -1,0 +1,251 @@
+{
+  "accounts": [
+    {
+      "id": "acc-1",
+      "name": "Chase Checking",
+      "type": "bank",
+      "balance": 4601
+    },
+    {
+      "id": "acc-2",
+      "name": "Wallet Cash",
+      "type": "cash",
+      "balance": 191.51
+    },
+    {
+      "id": "acc-3",
+      "name": "Crypto Ledger",
+      "type": "wallet",
+      "balance": 2480
+    }
+  ],
+  "transactions": [
+    {
+      "id": "tx-1",
+      "type": "income",
+      "amount": 3650,
+      "description": "Monthly Salary Acme Corp",
+      "category": "Salary",
+      "date": "2026-08-06",
+      "accountId": "acc-1"
+    },
+    {
+      "id": "tx-2",
+      "type": "expense",
+      "amount": 89.99,
+      "description": "Amazon Shopping (Home Goods)",
+      "category": "Shopping",
+      "date": "2026-08-06",
+      "accountId": "acc-1"
+    },
+    {
+      "id": "tx-3",
+      "type": "expense",
+      "amount": 6.45,
+      "description": "Starbucks Coffee Latte",
+      "category": "Food",
+      "date": "2026-08-06",
+      "accountId": "acc-2"
+    },
+    {
+      "id": "tx-4",
+      "type": "income",
+      "amount": 250,
+      "description": "Freelance Logo Design",
+      "category": "Salary",
+      "date": "2026-08-04",
+      "accountId": "acc-3"
+    },
+    {
+      "id": "tx-5",
+      "type": "expense",
+      "amount": 15.99,
+      "description": "Netflix Premium Subscription",
+      "category": "Entertainment",
+      "date": "2026-08-02",
+      "accountId": "acc-1"
+    },
+    {
+      "id": "tx-6",
+      "type": "expense",
+      "amount": 120,
+      "description": "Chevron Gas Refuel",
+      "category": "Transport",
+      "date": "2026-07-30",
+      "accountId": "acc-2"
+    },
+    {
+      "id": "tx-7",
+      "type": "expense",
+      "amount": 45.5,
+      "description": "Whole Foods groceries",
+      "category": "Food",
+      "date": "2026-07-30",
+      "accountId": "acc-1"
+    },
+    {
+      "id": "tx-mpbcpe7qr7mmsiki1vc",
+      "type": "expense",
+      "amount": 700,
+      "category": "Transfer",
+      "date": "2026-08-07",
+      "description": "Withdrawal: Chase Checking (Cash Withdrawal)",
+      "accountId": "acc-1"
+    },
+    {
+      "id": "tx-p66hif6fgamsikipnj",
+      "type": "expense",
+      "amount": 10,
+      "category": "Transfer",
+      "date": "2026-08-07",
+      "description": "Withdrawal: Wallet Cash (food )",
+      "accountId": "acc-2"
+    },
+    {
+      "id": "tx-1he1sn9bivymsikl6kl",
+      "type": "expense",
+      "amount": 349,
+      "description": "Bought Wish: Ergonomic Office Chair",
+      "category": "Shopping",
+      "date": "2026-08-07",
+      "accountId": "acc-1"
+    },
+    {
+      "id": "tx-9kna6za0e88msikokv0",
+      "type": "expense",
+      "amount": 799,
+      "description": "Bought Wish: DJI Mini Drone",
+      "category": "Shopping",
+      "date": "2026-08-07",
+      "accountId": "acc-2"
+    },
+    {
+      "id": "tx-zk4sb8i1k2cmsikx7yq",
+      "type": "expense",
+      "amount": 1500,
+      "description": "Autopay: Apartment Rent",
+      "category": "Rent",
+      "date": "2026-08-07",
+      "accountId": "acc-1"
+    },
+    {
+      "id": "tx-mbe52ribmdrmsikxck2",
+      "type": "expense",
+      "amount": 1500,
+      "description": "Autopay: Apartment Rent",
+      "category": "Rent",
+      "date": "2026-08-07",
+      "accountId": "acc-1"
+    },
+    {
+      "id": "tx-3i2dgbc76qlmsikygno",
+      "type": "expense",
+      "amount": 120,
+      "description": "Settled Debt: Dave Miller (Concert Tickets prepay)",
+      "category": "Transfer",
+      "date": "2026-08-07",
+      "accountId": "acc-2"
+    },
+    {
+      "id": "tx-7rzfbo8jpxsmvgvhncs",
+      "type": "expense",
+      "amount": 499.99,
+      "description": "Bought Wish: PlayStation 5 Console",
+      "category": "Shopping",
+      "date": "2026-10-20",
+      "accountId": "acc-2"
+    }
+  ],
+  "recurring": [
+    {
+      "id": "rec-1",
+      "name": "Netflix Subscription",
+      "amount": 15.99,
+      "category": "Entertainment",
+      "frequency": "Monthly",
+      "nextDueDate": "2026-08-07",
+      "accountId": "acc-1"
+    },
+    {
+      "id": "rec-2",
+      "name": "Apartment Rent",
+      "amount": 1500,
+      "category": "Rent",
+      "frequency": "Monthly",
+      "nextDueDate": "2026-10-14",
+      "accountId": "acc-1"
+    },
+    {
+      "id": "rec-3",
+      "name": "Spotify Family Plan",
+      "amount": 16.99,
+      "category": "Entertainment",
+      "frequency": "Monthly",
+      "nextDueDate": "2026-08-19",
+      "accountId": "acc-1"
+    }
+  ],
+  "loans": [
+    {
+      "id": "loan-1",
+      "person": "Sarah Jenkins",
+      "type": "owe_me",
+      "amount": 250,
+      "dueDate": "2026-08-14",
+      "description": "Dinner Split at Italian Bistro",
+      "settled": false
+    },
+    {
+      "id": "loan-2",
+      "person": "Dave Miller",
+      "type": "i_owe",
+      "amount": 120,
+      "dueDate": "2026-08-03",
+      "description": "Concert Tickets prepay",
+      "settled": true
+    }
+  ],
+  "wishlist": [
+    {
+      "id": "wish-4qr8kopgbevmsikk9g4",
+      "name": "Head Phone ",
+      "price": 299,
+      "link": "#",
+      "notes": ""
+    }
+  ],
+  "categoryBudgets": [
+    {
+      "id": "cb-1",
+      "category": "Food",
+      "monthlyLimit": 600,
+      "rollovers": {},
+      "notes": "Groceries, dining out & cafes"
+    },
+    {
+      "id": "cb-2",
+      "category": "Shopping",
+      "monthlyLimit": 350,
+      "rollovers": {},
+      "notes": "Retail, tech & personal shopping"
+    },
+    {
+      "id": "cb-3",
+      "category": "Entertainment",
+      "monthlyLimit": 150,
+      "rollovers": {},
+      "notes": "Streaming, movies & events"
+    },
+    {
+      "id": "cb-4",
+      "category": "Transport",
+      "monthlyLimit": 200,
+      "rollovers": {},
+      "notes": "Gas, transit & rideshares"
+    }
+  ],
+  "settings": {
+    "monthlyBudget": 4200,
+    "profileType": "Balanced"
+  }
+}

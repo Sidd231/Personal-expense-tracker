@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AuraFinance — Personal Wealth Hub</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Ambient glowing backgrounds for design elegance -->
+    <div class="bg-blob bg-blob-1"></div>
+    <div class="bg-blob bg-blob-2"></div>
+
+    <!-- ==========================================
+         SECURE AUTHENTICATION PORTAL OVERLAY
+         ========================================== -->
+    <div class="auth-overlay" id="authOverlay">
+        <div class="auth-container">
+            <!-- Login Form Container -->
+            <div id="loginFormContainer">
+                <div class="auth-header">
+                    <div class="auth-logo"><i data-lucide="shield-check"></i></div>
+                    <h2 class="auth-title">AuraFinance</h2>
+                    <p class="auth-subtitle">Secure browser-encrypted wealth vault</p>
+                </div>
+                <form class="auth-form" id="loginForm">
+                    <div class="form-group">
+                        <label class="form-label" for="loginUser">Username</label>
+                        <input class="form-input" type="text" id="loginUser" required placeholder="User Name">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="loginPass">Password</label>
+                        <div class="form-input-container">
+                            <input class="form-input" type="password" id="loginPass" required placeholder="••••••••">
+                        </div>
+                    </div>
+                    <button class="auth-btn" type="submit">Sign In</button>
+                    <p class="auth-switch">New to AuraFinance? <a href="#" class="auth-switch-link" id="toRegister">Register here</a></p>
+                </form>
+            </div>
+
+            <!-- Register Form Container -->
+            <div id="signupFormContainer" style="display: none;">
+                <div class="auth-header">
+                    <div class="auth-logo"><i data-lucide="user-plus"></i></div>
+                    <h2 class="auth-title">Create Account</h2>
+                    <p class="auth-subtitle">All credentials stay hashed in the browser</p>
+                </div>
+                <form class="auth-form" id="signupForm">
+                    <div class="form-group">
+                        <label class="form-label" for="signupUser">Username</label>
+                        <input class="form-input" type="text" id="signupUser" required placeholder="User Name">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="signupPass">Password</label>
+                        <input class="form-input" type="password" id="signupPass" required placeholder="••••••••">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="signupConfirmPass">Confirm Password</label>
+                        <input class="form-input" type="password" id="signupConfirmPass" required placeholder="••••••••">
+                    </div>
+                    <button class="auth-btn" type="submit">Create Wallet Vault</button>
+                    <p class="auth-switch">Already registered? <a href="#" class="auth-switch-link" id="toLogin">Sign In</a></p>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ==========================================
+         MAIN APPLICATION LAYOUT CONTAINER
+         ========================================== -->
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="logo-container">
+                <div class="logo-icon"><i data-lucide="wallet-2"></i></div>
+                <h1 class="logo-text">AuraFinance</h1>
+            </div>
+            
+            <nav style="flex-grow: 1;">
+                <ul class="nav-links">
+                    <li class="nav-item"><a href="#dashboard"><i data-lucide="layout-dashboard"></i> Dashboard</a></li>
+                    <li class="nav-item"><a href="#transactions"><i data-lucide="arrow-left-right"></i> Transactions</a></li>
+                    <li class="nav-item"><a href="#budgets"><i data-lucide="piggy-bank"></i> Monthly Budgets</a></li>
+                    <li class="nav-item"><a href="#accounts"><i data-lucide="landmark"></i> Accounts</a></li>
+                    <li class="nav-item"><a href="#recurring"><i data-lucide="calendar-days"></i> Recurring</a></li>
+                    <li class="nav-item"><a href="#loans"><i data-lucide="hand-coins"></i> Loans & IOUs</a></li>
+                    <li class="nav-item"><a href="#wishlist"><i data-lucide="sparkles"></i> Wishlist</a></li>
+                    <li class="nav-item"><a href="#settings"><i data-lucide="settings"></i> Settings</a></li>
+                </ul>
+            </nav>
+
+            <div class="user-profile-badge">
+                <div class="user-avatar" id="sidebarAvatar">O</div>
+                <div class="user-info">
+                    <div class="user-name" id="sidebarUsername">Olivia</div>
+                    <div class="user-role" id="sidebarRole">Balanced Profile</div>
+                </div>
+                <a href="#" style="margin-left: auto; color: var(--text-muted); cursor: pointer;" id="sidebarSignOutBtn" title="Sign Out">
+                    <i data-lucide="log-out" style="width: 18px; height: 18px;"></i>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content Wrapper -->
+        <main class="main-content">
+            
+            <!-- 1. DASHBOARD PAGE -->
+            <section class="page-view" id="dashboardPage">
+                <div class="page-header">
+                    <div>
+                        <span class="page-greeting-sub">Welcome back!</span>
+                        <h2 class="page-title">Financial Overview</h2>
+                    </div>
+                    <div class="header-actions">
+                        <button class="btn btn-primary" id="openAddTxModalBtn"><i data-lucide="plus"></i> Add Transaction</button>
+                    </div>
+                </div>
+
+                <!-- Alerts Row -->
+                <div class="alerts-container" id="dashAlertsContainer"></div>
+
+                <!-- Dashboard Summary Row (Top balance card and stats) -->
+                <div class="grid-dash">
+                    <div class="balance-card">
+                        <div class="balance-header">
+                            <span>TOTAL NET WORTH</span>
+                            <i data-lucide="shield-check" style="color: var(--primary-light);"></i>
+                        </div>
+                        <div class="balance-value-container">
+                            <span class="balance-value" id="dashNetWorth">$0.00</span>
+                        </div>
+                        <div class="balance-trend">
+                            <i data-lucide="trending-up"></i>
+                            <span>Secure client-side storage</span>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3 class="card-title">Quick Actions</h3>
+                        <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 16px;">Quickly jump to other sections or update balances.</p>
+                        <div class="dashboard-actions-grid">
+                            <button class="dashboard-action-btn" onclick="window.location.hash='#transactions'"><i data-lucide="receipt"></i>Receipt Scan</button>
+                            <button class="dashboard-action-btn" onclick="window.location.hash='#accounts'"><i data-lucide="piggy-bank"></i>Accounts</button>
+                            <button class="dashboard-action-btn" onclick="window.location.hash='#recurring'"><i data-lucide="refresh-cw"></i>Recurring</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Stats Row -->
+                <div class="quick-stats-row">
+                    <div class="stat-box">
+                        <div class="stat-icon income"><i data-lucide="arrow-up-right"></i></div>
+                        <div class="stat-details">
+                            <span class="stat-title">Month Income</span>
+                            <span class="stat-num" id="dashMonthlyIncome">$0.00</span>
+                        </div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-icon expense"><i data-lucide="arrow-down-left"></i></div>
+                        <div class="stat-details">
+                            <span class="stat-title">Month Expense</span>
+                            <span class="stat-num" id="dashMonthlyExpense">$0.00</span>
+                        </div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-icon savings"><i data-lucide="wallet"></i></div>
+                        <div class="stat-details">
+                            <span class="stat-title">Saved Amount</span>
+                            <span class="stat-num" id="dashMonthlySavings">$0.00</span>
+                        </div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-icon invest"><i data-lucide="bar-chart-3"></i></div>
+                        <div class="stat-details">
+                            <span class="stat-title">Budget Limit</span>
+                            <span class="stat-num" id="dashBudgetLimit">$4,200</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Section -->
+                <div class="grid-2" style="margin-bottom: 32px;">
+                    <div class="card">
+                        <h3 class="card-title">Income vs Expenses</h3>
+                        <div class="chart-box-container">
+                            <canvas id="incomeExpenseChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h3 class="card-title">Monthly Category Split</h3>
+                        <div class="chart-box-container">
+                            <canvas id="categoryChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Monthly Category Budgets Live Envelopes Row -->
+                <div class="card" style="margin-bottom: 32px;">
+                    <div class="card-title">
+                        <span>Monthly Category Budgets (Live Envelopes)</span>
+                        <a href="#budgets" style="font-size: 13px; font-weight: 600; text-decoration: none; color: var(--primary-dark); display: inline-flex; align-items: center; gap: 4px;">
+                            View All & Rollover <i data-lucide="arrow-right" style="width: 14px; height: 14px;"></i>
+                        </a>
+                    </div>
+                    <div id="dashBudgetsContainer" class="dash-budgets-grid"></div>
+                </div>
+
+                <!-- Recent Transactions Row -->
+                <div class="card">
+                    <h3 class="card-title">Recent Transactions</h3>
+                    <div class="table-container">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Description</th>
+                                    <th>Category</th>
+                                    <th>Date</th>
+                                    <th>Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody id="dashRecentTransactionsBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2. TRANSACTIONS PAGE -->
+            <section class="page-view" id="transactionsPage">
+                <div class="page-header">
+                    <div>
+                        <span class="page-greeting-sub">Cash Logs</span>
+                        <h2 class="page-title">Transactions</h2>
+                    </div>
+                    <div class="header-actions">
+                        <button class="btn btn-primary" id="openAddTxModalBtn"><i data-lucide="plus"></i> Add Transaction</button>
+                    </div>
+                </div>
+
+                <div class="grid-dash">
+                    <!-- Transactions List Card -->
+                    <div class="card">
+                        <div class="filter-row">
+                            <h3 style="font-weight: 700; font-size: 16px;">Ledger List</h3>
+                            <div class="filter-tabs">
+                                <button class="filter-tab tx-filter-tab active" data-filter="all">All</button>
+                                <button class="filter-tab tx-filter-tab" data-filter="weekly">Weekly</button>
+                                <button class="filter-tab tx-filter-tab" data-filter="monthly">Monthly</button>
+                            </div>
+                        </div>
+
+                        <div class="table-container">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Description</th>
+                                        <th>Category</th>
+                                        <th>Date</th>
+                                        <th>Account</th>
+                                        <th>Amount</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="txTableBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- AI Receipt Scanner Card -->
+                    <div class="card" style="height: fit-content;">
+                        <h3 class="card-title"><i data-lucide="sparkles" style="color: var(--primary); display:inline-block; vertical-align:middle; margin-right:6px;"></i> Claude AI Receipt Scanner</h3>
+                        <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 20px;">Upload or drop a receipt screenshot. Claude extracts the Merchant name, amount, category, and date instantly.</p>
+                        
+                        <div class="scanner-container" id="scannerDropzone">
+                            <input type="file" id="receiptFileInput" accept="image/*" class="file-upload-input">
+                            <div class="scanner-placeholder" id="scannerPlaceholder">
+                                <div class="scanner-icon"><i data-lucide="camera"></i></div>
+                                <div>
+                                    <p class="scanner-text">Upload Receipt Screenshot</p>
+                                    <p class="scanner-subtext">or drag and drop here</p>
+                                </div>
+                            </div>
+
+                            <div class="scanner-preview-container" id="scannerPreviewContainer" style="display: none;">
+                                <div class="scanner-laser-line" id="scannerLaser"></div>
+                                <img src="" id="scannerPreviewImg" class="scanner-preview-image" alt="Receipt preview">
+                            </div>
+
+                            <!-- Scanning laser simulation overlay -->
+                            <div class="scanner-scanning-overlay" id="scannerOverlay">
+                                <div class="scanner-spinner"></div>
+                                <p class="scanner-status-text" id="scannerStatus">Claude AI: Analyzing receipt image...</p>
+                            </div>
+                        </div>
+
+                        <div style="text-align: right; margin-top: 16px;">
+                            <button class="btn btn-secondary" id="scannerResetBtn" style="padding: 8px 16px; font-size:12px;">Reset Scanner</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. ACCOUNTS PAGE -->
+            <section class="page-view" id="accountsPage">
+                <div class="page-header">
+                    <div>
+                        <span class="page-greeting-sub">Wallet & Banks</span>
+                        <h2 class="page-title">Accounts Management</h2>
+                    </div>
+                    <div class="header-actions">
+                        <button class="btn btn-primary" id="openAddAccModalBtn"><i data-lucide="plus"></i> Add Account</button>
+                    </div>
+                </div>
+
+                <div class="card" style="margin-bottom: 32px;">
+                    <div style="display: flex; align-items: center; gap: 24px;">
+                        <div class="stat-icon savings" style="width: 56px; height: 56px; border-radius: 12px; font-size:24px;"><i data-lucide="landmark"></i></div>
+                        <div>
+                            <span class="page-greeting-sub">Total Assets Net Worth</span>
+                            <h2 style="font-size: 32px; font-weight:800; letter-spacing:-1px;" id="accNetWorthDisplay">$0.00</h2>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 style="font-size: 18px; font-weight:800; margin-bottom:16px;">Registered Accounts</h3>
+                <div class="accounts-grid" id="accountsCardsGrid"></div>
+            </section>
+
+            <!-- 4. RECURRING BILLS PAGE -->
+            <section class="page-view" id="recurringPage">
+                <div class="page-header">
+                    <div>
+                        <span class="page-greeting-sub">Subscriptions & Reminders</span>
+                        <h2 class="page-title">Recurring Payments</h2>
+                    </div>
+                    <div class="header-actions">
+                        <button class="btn btn-primary" id="openAddRecModalBtn"><i data-lucide="plus"></i> Add Subscription</button>
+                    </div>
+                </div>
+
+                <div class="list-card-grid" id="recurringGrid"></div>
+            </section>
+
+            <!-- 5.  LOANS & IOUs PAGE -->
+            <section class="page-view" id="loansPage">
+                <div class="page-header">
+                    <div>
+                        <span class="page-greeting-sub">Receivables & Payables</span>
+                        <h2 class="page-title">Loans & IOUs</h2>
+                    </div>
+                    <div class="header-actions">
+                        <button class="btn btn-primary" id="openAddLoanModalBtn"><i data-lucide="plus"></i> Add IOU Record</button>
+                    </div>
+                </div>
+
+                <div class="list-card-grid" id="loansGrid"></div>
+            </section>
+
+            <!-- 6. 🛍️ WISHLIST PAGE -->
+            <section class="page-view" id="wishlistPage">
+                <div class="page-header">
+                    <div>
+                        <span class="page-greeting-sub">Savings Goals</span>
+                        <h2 class="page-title">Wishlist Tracker</h2>
+                    </div>
+                    <div class="header-actions">
+                        <button class="btn btn-primary" id="openAddWishModalBtn"><i data-lucide="plus"></i> Add Wish Goal</button>
+                    </div>
+                </div>
+
+                <div class="list-card-grid" id="wishlistGrid"></div>
+            </section>
+
+            <!-- 2.5 💰 MONTHLY BUDGETS PAGE -->
+            <section class="page-view" id="budgetsPage">
+                <div class="page-header" style="flex-wrap: wrap; gap: 16px;">
+                    <div>
+                        <span class="page-greeting-sub">Envelope Allocation & Leftover Rollovers</span>
+                        <h2 class="page-title">Monthly Budgets</h2>
+                    </div>
+                    <div class="header-actions" style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+                        <!-- Month Navigator -->
+                        <div class="budget-month-navigator">
+                            <button class="btn btn-secondary btn-sm" id="budgetPrevMonthBtn" title="Previous Month"><i data-lucide="chevron-left"></i></button>
+                            <span class="budget-month-pill" id="budgetMonthDisplay">September 2026</span>
+                            <button class="btn btn-secondary btn-sm" id="budgetNextMonthBtn" title="Next Month"><i data-lucide="chevron-right"></i></button>
+                            <button class="btn btn-outline btn-sm" id="budgetTodayBtn">Current Month</button>
+                        </div>
+                        <button class="btn btn-secondary" id="quickRolloverAllBtn" title="Rollover all leftover funds to next month"><i data-lucide="sparkles"></i> Rollover All Leftovers</button>
+                        <button class="btn btn-primary" id="openAddBudgetModalBtn"><i data-lucide="plus"></i> Add Monthly Budget</button>
+                    </div>
+                </div>
+
+                <!-- Monthly Budget Stats Summary Row -->
+                <div class="quick-stats-row" style="margin-bottom: 24px;">
+                    <div class="stat-box">
+                        <div class="stat-icon invest"><i data-lucide="wallet-cards"></i></div>
+                        <div class="stat-details">
+                            <span class="stat-title">Fixed Allocation</span>
+                            <span class="stat-num" id="budgetTotalFixed">$0.00</span>
+                        </div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-icon income"><i data-lucide="arrow-down-right"></i></div>
+                        <div class="stat-details">
+                            <span class="stat-title">Rollover In</span>
+                            <span class="stat-num" id="budgetTotalRolloverIn">+$0.00</span>
+                        </div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-icon savings"><i data-lucide="shield-check"></i></div>
+                        <div class="stat-details">
+                            <span class="stat-title">Total Allowed</span>
+                            <span class="stat-num" id="budgetTotalAllowed">$0.00</span>
+                        </div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-icon expense"><i data-lucide="arrow-down-left"></i></div>
+                        <div class="stat-details">
+                            <span class="stat-title">Month Spent</span>
+                            <span class="stat-num" id="budgetTotalSpent">$0.00</span>
+                        </div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-icon" style="background-color: var(--primary-light); color: var(--primary-dark);"><i data-lucide="gift"></i></div>
+                        <div class="stat-details">
+                            <span class="stat-title">Remaining Leftover</span>
+                            <span class="stat-num text-success" id="budgetTotalLeftover">$0.00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Active Budget Cards Grid -->
+                <div class="budget-cards-grid" id="budgetsGrid"></div>
+            </section>
+
+            <!-- 7. ⚙️ SETTINGS PAGE -->
+            <section class="page-view" id="settingsPage">
+                <div class="page-header">
+                    <div>
+                        <span class="page-greeting-sub">Configurations</span>
+                        <h2 class="page-title">System Settings</h2>
+                    </div>
+                </div>
+
+                <div class="card" style="max-width: 600px;">
+                    <form class="settings-form" id="settingsForm">
+                        
+                        <div class="settings-section">
+                            <h3 class="settings-title">Monthly Budget Threshold</h3>
+                            <div class="form-group">
+                                <label class="form-label" for="setBudget">Budget Limit ($)</label>
+                                <input class="form-input" type="number" id="setBudget" required min="1">
+                            </div>
+                        </div>
+
+                        <div class="settings-section">
+                            <h3 class="settings-title">Savings Profile Level</h3>
+                            <p style="font-size:12px; color: var(--text-secondary); margin-bottom:12px;">This selects the calculation rules for the Wishlist Recommendation Engine thresholds.</p>
+                            <div class="form-group">
+                                <label class="form-label" for="setProfile">Profile Level</label>
+                                <select class="form-input" id="setProfile">
+                                    <option value="Frugal">Frugal (Low asset cap, high budget reserve)</option>
+                                    <option value="Balanced">Balanced (Medium asset cap, medium budget reserve)</option>
+                                    <option value="Splurger">Splurger (High asset cap, loose budget reserve)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="settings-section">
+                            <h3 class="settings-title">Data Backup (JSON Vault)</h3>
+                            <p style="font-size:12px; color: var(--text-secondary); margin-bottom:16px;">Download all your records as a secure JSON file, or restore a previous back-up.</p>
+                            <div class="settings-row-actions">
+                                <button class="btn btn-secondary" type="button" id="settingsExportBtn"><i data-lucide="download"></i> Export Data Backup</button>
+                                <button class="btn btn-secondary" type="button" id="settingsImportBtn"><i data-lucide="upload"></i> Import Data Backup</button>
+                                <input type="file" id="importFileInput" accept=".json" style="display:none;">
+                            </div>
+                        </div>
+
+                        <div style="text-align: right; padding-top: 16px;">
+                            <button class="btn btn-primary" type="submit">Save Configurations</button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+
+    <!-- ==========================================
+         DIALOG MODALS (ADD FORMS AND ACTIONS)
+         ========================================== -->
+
+    <!-- A. Add Transaction Modal -->
+    <div class="modal" id="addTransactionModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Add Transaction</h3>
+                <button class="modal-close" onclick="ui.closeModal('#addTransactionModal')">&times;</button>
+            </div>
+            <form id="addTxForm">
+                <div class="modal-body" style="display: flex; flex-direction: column; gap: 16px;">
+                    <div class="form-group">
+                        <label class="form-label" for="txType">Type</label>
+                        <select class="form-input" id="txType" required>
+                            <option value="expense">Expense</option>
+                            <option value="income">Income</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="txAmount">Amount ($)</label>
+                        <input class="form-input" type="number" step="0.01" id="txAmount" required min="0.01" placeholder="25.50">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="txCategory">Category</label>
+                        <select class="form-input" id="txCategory" required>
+                            <option value="Food">Food</option>
+                            <option value="Shopping">Shopping</option>
+                            <option value="Rent">Rent</option>
+                            <option value="Transport">Transport</option>
+                            <option value="Entertainment">Entertainment</option>
+                            <option value="Utilities">Utilities</option>
+                            <option value="Salary">Salary / Freelance</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="txAccount">Account Source</label>
+                        <select class="form-input" id="txAccount" required></select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="txDate">Transaction Date</label>
+                        <input class="form-input" type="date" id="txDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="txDesc">Description</label>
+                        <input class="form-input" type="text" id="txDesc" required placeholder="Starbucks, Netflix, etc.">
+                    </div>
+                    <div id="txBudgetHint" class="tx-budget-hint" style="display:none;"></div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" id="cancelAddTxBtn">Cancel</button>
+                    <button class="btn btn-primary" type="submit">Add Ledger</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- B. Deposit/Withdraw Account Modal -->
+    <div class="modal" id="depositWithdrawModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="dwModalTitle">Deposit Money</h3>
+                <button class="modal-close" onclick="ui.closeModal('#depositWithdrawModal')">&times;</button>
+            </div>
+            <form id="dwForm">
+                <input type="hidden" id="dwAccountId">
+                <input type="hidden" id="dwActionType">
+                <div class="modal-body" style="display: flex; flex-direction: column; gap: 16px;">
+                    <div class="form-group">
+                        <label class="form-label" for="dwAmount">Amount ($)</label>
+                        <input class="form-input" type="number" step="0.01" id="dwAmount" required min="0.01">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="dwNote">Description Note</label>
+                        <input class="form-input" type="text" id="dwNote" placeholder="e.g. Weekly Cash Refuel">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" id="cancelDWBtn">Cancel</button>
+                    <button class="btn btn-primary" type="submit">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- C. Add Account Modal -->
+    <div class="modal" id="addAccountModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Create Account</h3>
+                <button class="modal-close" onclick="ui.closeModal('#addAccountModal')">&times;</button>
+            </div>
+            <form id="addAccForm">
+                <div class="modal-body" style="display: flex; flex-direction: column; gap: 16px;">
+                    <div class="form-group">
+                        <label class="form-label" for="accName">Account Name</label>
+                        <input class="form-input" type="text" id="accName" required placeholder="Chase Checking">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="accType">Type</label>
+                        <select class="form-input" id="accType" required>
+                            <option value="bank">Bank (Debit/Credit)</option>
+                            <option value="cash">Cash (Physical Wallet)</option>
+                            <option value="wallet">Crypto Wallet / Asset</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="accBalance">Initial Balance ($)</label>
+                        <input class="form-input" type="number" step="0.01" id="accBalance" required min="0">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" id="cancelAddAccBtn">Cancel</button>
+                    <button class="btn btn-primary" type="submit">Create Card</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- D. Add Recurring Modal -->
+    <div class="modal" id="addRecurringModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Add Subscription Reminders</h3>
+                <button class="modal-close" onclick="ui.closeModal('#addRecurringModal')">&times;</button>
+            </div>
+            <form id="addRecForm">
+                <div class="modal-body" style="display: flex; flex-direction: column; gap: 16px;">
+                    <div class="form-group">
+                        <label class="form-label" for="recName">Subscription Name</label>
+                        <input class="form-input" type="text" id="recName" required placeholder="Netflix, Rent, etc.">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="recAmount">Billing Amount ($)</label>
+                        <input class="form-input" type="number" step="0.01" id="recAmount" required min="0.01">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="recCategory">Category</label>
+                        <select class="form-input" id="recCategory" required>
+                            <option value="Entertainment">Entertainment</option>
+                            <option value="Rent">Rent</option>
+                            <option value="Utilities">Utilities</option>
+                            <option value="Food">Food / Delivery</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="recFrequency">Billing Cycle</label>
+                        <select class="form-input" id="recFrequency" required>
+                            <option value="Monthly">Monthly</option>
+                            <option value="Weekly">Weekly</option>
+                            <option value="Yearly">Yearly</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="recDueDate">Next Due Date</label>
+                        <input class="form-input" type="date" id="recDueDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="recAccount">Target Account Billing Source</label>
+                        <select class="form-input" id="recAccount" required></select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" id="cancelAddRecBtn">Cancel</button>
+                    <button class="btn btn-primary" type="submit">Log Reminders</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- E. Add Loans Modal -->
+    <div class="modal" id="addLoanModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Record Loan or Debt</h3>
+                <button class="modal-close" onclick="ui.closeModal('#addLoanModal')">&times;</button>
+            </div>
+            <form id="addLoanForm">
+                <div class="modal-body" style="display: flex; flex-direction: column; gap: 16px;">
+                    <div class="form-group">
+                        <label class="form-label" for="loanPerson">Person's Name</label>
+                        <input class="form-input" type="text" id="loanPerson" required placeholder="John Doe">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="loanType">Loan Direction</label>
+                        <select class="form-input" id="loanType" required>
+                            <option value="owe_me">They owe me money (Receivable)</option>
+                            <option value="i_owe">I owe them money (Payable)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="loanAmount">Amount ($)</label>
+                        <input class="form-input" type="number" step="0.01" id="loanAmount" required min="0.01">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="loanDueDate">Return Deadline</label>
+                        <input class="form-input" type="date" id="loanDueDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="loanDesc">Short Description</label>
+                        <input class="form-input" type="text" id="loanDesc" required placeholder="Lunch split prepay, Concert tickets, etc.">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" id="cancelAddLoanBtn">Cancel</button>
+                    <button class="btn btn-primary" type="submit">Record IOU</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- F. Add Wishlist Item Modal -->
+    <div class="modal" id="addWishModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Add Wish Goal</h3>
+                <button class="modal-close" onclick="ui.closeModal('#addWishModal')">&times;</button>
+            </div>
+            <form id="addWishForm">
+                <div class="modal-body" style="display: flex; flex-direction: column; gap: 16px;">
+                    <div class="form-group">
+                        <label class="form-label" for="wishName">Item Name</label>
+                        <input class="form-input" type="text" id="wishName" required placeholder="PlayStation 5">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="wishPrice">Price ($)</label>
+                        <input class="form-input" type="number" step="0.01" id="wishPrice" required min="0.01">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="wishLink">Store URL Link</label>
+                        <input class="form-input" type="url" id="wishLink" placeholder="https://amazon.com/item">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="wishNotes">Notes & Details</label>
+                        <input class="form-input" type="text" id="wishNotes" placeholder="For gaming setup, work etc.">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" id="cancelAddWishBtn">Cancel</button>
+                    <button class="btn btn-primary" type="submit">Log Wish Goal</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- G. OCR Receipt Extracted Verification Modal -->
+    <div class="modal" id="verifyOcrModal">
+        <div class="modal-content" style="border: 2px solid var(--primary);">
+            <div class="modal-header" style="background-color: var(--primary-soft);">
+                <h3 class="modal-title"><i data-lucide="sparkles" style="color: var(--primary-dark); display:inline-block; vertical-align:middle;"></i> Claude AI: OCR Receipt Analysis</h3>
+                <button class="modal-close" onclick="ui.closeModal('#verifyOcrModal')">&times;</button>
+            </div>
+            <div class="modal-body" style="display: flex; flex-direction: column; gap: 16px;">
+                <p style="font-size:12px; color: var(--text-secondary); margin-bottom: 8px;">Claude scanned your receipt and extracted the following data. Verify details and save below.</p>
+                <div class="form-group">
+                    <label class="form-label" for="ocrDesc">Merchant / Description</label>
+                    <input class="form-input" type="text" id="ocrDesc" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="ocrCategory">Category</label>
+                    <select class="form-input" id="ocrCategory" required>
+                        <option value="Food">Food</option>
+                        <option value="Shopping">Shopping</option>
+                        <option value="Rent">Rent</option>
+                        <option value="Transport">Transport</option>
+                        <option value="Entertainment">Entertainment</option>
+                        <option value="Utilities">Utilities</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="ocrAmount">Extracted Total Amount ($)</label>
+                    <input class="form-input" type="number" step="0.01" id="ocrAmount" required min="0.01">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="ocrAccount">Account to Charge</label>
+                    <select class="form-input" id="ocrAccount" required></select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="ocrDate">Billing Date</label>
+                    <input class="form-input" type="date" id="ocrDate" required>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" id="cancelOcrBtn">Discard</button>
+                <button class="btn btn-primary" type="button" id="confirmOcrBtn">Approve & Save</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- H. Add/Edit Monthly Category Budget Modal -->
+    <div class="modal" id="budgetModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="budgetModalTitle">Add Monthly Budget</h3>
+                <button class="modal-close" onclick="ui.closeModal('#budgetModal')">&times;</button>
+            </div>
+            <form id="budgetForm">
+                <input type="hidden" id="budgetId">
+                <div class="modal-body" style="display: flex; flex-direction: column; gap: 16px;">
+                    <div class="form-group">
+                        <label class="form-label" for="budgetCategorySelect">Budget Category / Thing</label>
+                        <select class="form-input" id="budgetCategorySelect" required>
+                            <option value="Food">Food</option>
+                            <option value="Shopping">Shopping</option>
+                            <option value="Entertainment">Entertainment</option>
+                            <option value="Transport">Transport</option>
+                            <option value="Rent">Rent</option>
+                            <option value="Utilities">Utilities</option>
+                            <option value="Other">Other</option>
+                            <option value="__custom__">+ Custom Category / Item...</option>
+                        </select>
+                    </div>
+                    <div class="form-group" id="budgetCustomCategoryGroup" style="display: none;">
+                        <label class="form-label" for="budgetCustomCategory">Custom Category Name</label>
+                        <input class="form-input" type="text" id="budgetCustomCategory" placeholder="e.g. Gaming, Gym, Coffee, Travel">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="budgetMonthlyLimit">Fixed Monthly Allowance ($)</label>
+                        <input class="form-input" type="number" step="0.01" id="budgetMonthlyLimit" required min="1" placeholder="e.g. 500.00">
+                        <span style="font-size: 11px; color: var(--text-muted); margin-top: 4px; display: block;">
+                            🔄 This fixed allowance refreshes automatically at the start of every month.
+                        </span>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="budgetNotes">Envelope Notes (Optional)</label>
+                        <input class="form-input" type="text" id="budgetNotes" placeholder="e.g. Weekly meal prep and cafes">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" id="cancelBudgetBtn">Cancel</button>
+                    <button class="btn btn-primary" type="submit" id="saveBudgetBtn">Save Budget</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- I. Rollover Leftover Money Modal -->
+    <div class="modal" id="rolloverModal">
+        <div class="modal-content" style="max-width: 480px;">
+            <div class="modal-header">
+                <h3 class="modal-title"><i data-lucide="arrow-right-circle" style="color: var(--primary-dark); display:inline-block; vertical-align:middle;"></i> Rollover to Next Month</h3>
+                <button class="modal-close" onclick="ui.closeModal('#rolloverModal')">&times;</button>
+            </div>
+            <form id="rolloverForm">
+                <input type="hidden" id="rolloverBudgetId">
+                <input type="hidden" id="rolloverFromMonth">
+                <input type="hidden" id="rolloverToMonth">
+                <div class="modal-body" style="display: flex; flex-direction: column; gap: 18px;">
+                    <div class="rollover-summary-box">
+                        <div class="rollover-flow">
+                            <div class="rollover-flow-month">
+                                <span class="flow-label">Source Month</span>
+                                <span class="flow-val" id="rolloverFromMonthLabel">September 2026</span>
+                            </div>
+                            <div class="rollover-arrow"><i data-lucide="arrow-right"></i></div>
+                            <div class="rollover-flow-month highlight">
+                                <span class="flow-label">Next Month</span>
+                                <span class="flow-val" id="rolloverToMonthLabel">October 2026</span>
+                            </div>
+                        </div>
+                        <div class="rollover-stats-row">
+                            <div>
+                                <span class="sub">Category / Thing</span>
+                                <strong id="rolloverCategoryName">Food</strong>
+                            </div>
+                            <div>
+                                <span class="sub">Unspent Leftover</span>
+                                <strong class="text-success" id="rolloverLeftoverAvailable">$180.00</strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="rolloverAmount">Amount to Add to Next Month Budget ($)</label>
+                        <div style="display: flex; gap: 8px;">
+                            <input class="form-input" type="number" step="0.01" id="rolloverAmount" required min="0.01" style="flex: 1;">
+                            <button type="button" class="btn btn-secondary btn-sm" id="rolloverAllBtn" style="white-space: nowrap;">All Leftover</button>
+                        </div>
+                        <span style="font-size: 11px; color: var(--text-muted); margin-top: 4px; display: block;">
+                            Add your unspent leftover money into next month's allowance for this item.
+                        </span>
+                    </div>
+
+                    <div class="rollover-preview-card">
+                        <div class="preview-title">Next Month's Effective Budget Preview:</div>
+                        <div class="preview-math">
+                            <span>Base: <strong id="rolloverPreviewBase">$500.00</strong></span>
+                            <span>+</span>
+                            <span>Rollover: <strong class="text-success" id="rolloverPreviewAdded">+$180.00</strong></span>
+                            <span>=</span>
+                            <span>Total Available: <strong class="text-primary" id="rolloverPreviewTotal">$680.00</strong></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" id="cancelRolloverBtn">Cancel</button>
+                    <button class="btn btn-primary" type="submit"><i data-lucide="check"></i> Confirm & Add to Next Month</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- J. Budget Limit Exceeded Confirmation Modal -->
+    <div class="modal" id="budgetCapExceededModal">
+        <div class="modal-content" style="max-width: 480px; border: 2px solid var(--danger);">
+            <div class="modal-header" style="background-color: var(--danger-soft);">
+                <h3 class="modal-title" style="color: var(--danger);"><i data-lucide="alert-octagon" style="display:inline-block; vertical-align:middle;"></i> Monthly Budget Exceeded!</h3>
+                <button class="modal-close" onclick="ui.closeModal('#budgetCapExceededModal')">&times;</button>
+            </div>
+            <div class="modal-body" style="display: flex; flex-direction: column; gap: 16px;">
+                <p style="font-size: 14px; color: var(--text-secondary);">
+                    This transaction exceeds your monthly spending limit for <strong id="capCategoryName">Food</strong> in <strong id="capMonthName">September 2026</strong>.
+                </p>
+                <div class="cap-breakdown-card">
+                    <div class="cap-row">
+                        <span>Total Monthly Budget:</span>
+                        <strong id="capTotalBudget">$500.00</strong>
+                    </div>
+                    <div class="cap-row">
+                        <span>Already Spent This Month:</span>
+                        <strong id="capAlreadySpent">$450.00</strong>
+                    </div>
+                    <div class="cap-row">
+                        <span>Remaining Budget Available:</span>
+                        <strong class="text-warning" id="capRemainingBudget">$50.00</strong>
+                    </div>
+                    <div class="cap-row highlight-danger">
+                        <span>This Transaction:</span>
+                        <strong class="text-danger" id="capThisTxAmount">$85.00</strong>
+                    </div>
+                    <div class="cap-row over-amount">
+                        <span>Exceeds Budget By:</span>
+                        <strong class="text-danger" id="capOverAmount">$35.00</strong>
+                    </div>
+                </div>
+                <p style="font-size: 12px; color: var(--text-muted);">
+                    You can cancel to stay strictly within your budget, or override to proceed with this expense.
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" id="capCancelBtn">Cancel (Stay Within Budget)</button>
+                <button class="btn btn-danger" type="button" id="capOverrideBtn">Override & Proceed</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ==========================================
+         SCRIPTS LOADING
+         ========================================== -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="module" src="js/app.js"></script>
+    
+    <script>
+        // Initial set current date for forms
+        document.addEventListener("DOMContentLoaded", () => {
+            const today = new Date().toISOString().split("T")[0];
+            const dateInputs = ["txDate", "recDueDate", "loanDueDate"];
+            dateInputs.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.value = today;
+            });
+        });
+    </script>
+</body>
+</html>

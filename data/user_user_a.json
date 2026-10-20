@@ -1,0 +1,87 @@
+{
+  "accounts": [
+    {
+      "id": "acc-nln5pkc3scmsikany6",
+      "name": "My Checking",
+      "type": "bank",
+      "balance": 4934.01
+    }
+  ],
+  "transactions": [
+    {
+      "id": "tx-5inrizqcnp9muj7vjuk",
+      "type": "expense",
+      "amount": 50,
+      "category": "Food",
+      "date": "2026-09-27",
+      "description": "Whole Foods Supermarket",
+      "accountId": "acc-nln5pkc3scmsikany6"
+    },
+    {
+      "id": "tx-i7fwksiybymuj86iw4",
+      "type": "expense",
+      "amount": 15.99,
+      "description": "Autopay: Netflix Premium",
+      "category": "Entertainment",
+      "date": "2026-09-27",
+      "accountId": "acc-nln5pkc3scmsikany6"
+    }
+  ],
+  "recurring": [
+    {
+      "id": "rec-uzzblhz28tsmuj85uok",
+      "name": "Netflix Premium",
+      "amount": 15.99,
+      "category": "Entertainment",
+      "frequency": "Monthly",
+      "nextDueDate": "2026-10-27",
+      "accountId": "acc-nln5pkc3scmsikany6"
+    }
+  ],
+  "loans": [],
+  "wishlist": [],
+  "settings": {
+    "monthlyBudget": 4200,
+    "profileType": "Balanced"
+  },
+  "categoryBudgets": [
+    {
+      "id": "cb-1",
+      "category": "Food",
+      "monthlyLimit": 600,
+      "rollovers": {
+        "2026-10": 550
+      },
+      "notes": "Groceries, dining out & cafes"
+    },
+    {
+      "id": "cb-2",
+      "category": "Shopping",
+      "monthlyLimit": 350,
+      "rollovers": {},
+      "notes": "Retail, tech & personal shopping"
+    },
+    {
+      "id": "cb-3",
+      "category": "Entertainment",
+      "monthlyLimit": 150,
+      "rollovers": {},
+      "notes": "Streaming, movies & events"
+    },
+    {
+      "id": "cb-4",
+      "category": "Transport",
+      "monthlyLimit": 250,
+      "rollovers": {},
+      "notes": "Gas, transit & rideshares"
+    },
+    {
+      "id": "cb-x7n30l9ysa8muj7esbj",
+      "category": "Rent",
+      "monthlyLimit": 200,
+      "rollovers": {},
+      "notes": "",
+      "createdAt": "2026-09-27T02:33:04.735Z"
+    }
+  ]
+}
